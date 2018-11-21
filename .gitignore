@@ -1,2 +1,3 @@
+# ignore raw data sets (to be downloaded from ENA)
 .fastq.gz
 .fastq.gz.md5
