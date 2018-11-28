@@ -1,25 +1,33 @@
 #!/bin/bash
 clear
 
+### NOTE: This step introduces new read files to the pipeline, which were pre-stored in $WORK/1_output/1.4_dedup/. 
+###       These are BAM files for H. puella, nigricans, and unicolor from Belize, which were created in Hench et al. 2018.
+###       See documentation for this publication for scripts too recreate these files
+
 cd $WORK/1_output/1.4_dedup
 
-for i in $( ls /sfs/fs2/work-geomar7/smomw335/dedup_bams/run2_phylo/ | grep ".bam"); do
+for i in $( ls | grep ".bam"); do
     FULL=${i%%-dedup.bam};
 
     echo 'sampleID='$FULL
-    echo 'O=../../gVCFs/run2_phylo/'$FULL'-output.raw.snps';
+    echo 'O='$WORK'/1_output/1.6_gVCFs/'$FULL'-output.raw.snps';
     echo "----------------";
-    sed "s/XXnameXX/$FULL/" variantCall_temp.sh > variantCall/$FULL-varcall.sh;
-    echo "java -Xmx50G -jar $GATK \\" >>  variantCall/$FULL-varcall.sh;
-    echo "	-R $WORK/reference/v2_unmasked_01.fa \\" >> variantCall/$FULL-varcall.sh;
-    echo "	-T HaplotypeCaller \\" >> variantCall/$FULL-varcall.sh;
-    echo "	-I $WORK/dedup_bams/run2_phylo/$i \\" >> variantCall/$FULL-varcall.sh; 
-    echo "	--emitRefConfidence GVCF -nct 10 \\" >> variantCall/$FULL-varcall.sh;
-    echo "	-o $WORK/gVCFs/run2_phylo/$FULL-output.raw.snps.indels.g.vcf" >> variantCall/$FULL-varcall.sh;
-    echo "echo done" >> variantCall/$FULL-varcall.sh;
-    cd variantCall;
-    qsub $FULL-varcall.sh
-    cd /sfs/fs2/work-geomar7/smomw335/scripts/run2_phylo/
+
+    sed "s/XXnameXX/$FULL/" $WORK/1_genotyping-scripts/0_templates/1.6.genotype_temp.sh > $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "java -Xmx50G -jar $GATK \\" >>  $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "	-R $WORK/0_data/0_resources/HP_genome_unmasked_01.fa \\" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "	-T HaplotypeCaller \\" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "	-I $WORK/1_output/1.4_dedup/$FULL-dedup.bam \\" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "	--emitRefConfidence GVCF -nct 10 \\" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "	-o $WORK/1_output/1.6_gVCFs/$FULL.output.raw.snps.indels.g.vcf" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+    echo "echo done" >> $WORK/1_genotyping-scripts/1-6_genotype/1.6.genotype_$FULL.sh;
+
+    cd $WORK/1_genotyping-scripts/1-6_genotype/;
+    qsub 1.6.genotype_$FULL.sh;
+
+    cd $WORK/1_output/1.4_dedup
+
     echo '-------------------';
 done
 
