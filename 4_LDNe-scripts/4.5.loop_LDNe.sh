@@ -16,3 +16,7 @@ for f in $(ls $WORK/4_output/4.2_split_SNPs/*.vcf); do
     sed 's/XXSPLIT_IDXX/'$SAMP'/g' ./0_templates/option_temp > ./4-5_LDNe/option_$SAMP;
     Ne2-1L i:4-5_LDNe/info_$SAMP o:4-5_LDNe/option_$SAMP
  done
+
+cd $WORK/4_output/4.5_LDNe_output
+
+grep 'PL17' *xLD.txt > maybel_LDNe.txt

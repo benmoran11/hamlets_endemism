@@ -21,6 +21,7 @@ OUTDIR=$WORK/3_output/3.4_bamCaller_out/XXspeciesXX
 cd $WORK/3_smc-scripts
 
 for i in $(cat $WORK/0_data/0_resources/XXspeciesXX.txt); do
+    FULL=$(grep $i $WORK/0_data/0_resources/fullnames.txt)
     for k in {01..24}; do
 
 	L="LG"$k;
@@ -28,9 +29,9 @@ for i in $(cat $WORK/0_data/0_resources/XXspeciesXX.txt); do
 	echo "------------------------------------------"
 	echo $i", "$L
 
-	samtools mpileup -q 25 -Q 20 -C 50 -u -r $L -f $WORK/0_data/0_resources/HP_genome_unmasked_01.fa $INDIR/$i-dedup.bam | \
-	    bcftools call -c -V indels | $WORK/0_data/2_scripts/bamHamletCaller.py $DEPTH $OUTDIR/${i}_${L}_coverage.mask.bed.gz | \
-	    gzip -c > $OUTDIR/${i}_${L}_segsites.vcf.gz
+	samtools mpileup -q 25 -Q 20 -C 50 -u -r $L -f $WORK/0_data/0_resources/HP_genome_unmasked_01.fa $INDIR/$FULL-dedup.bam | \
+	    bcftools call -c -V indels | $WORK/0_data/2_scripts/bamHamletCaller.py $DEPTH $OUTDIR/${FULL}_${L}_coverage.mask.bed.gz | \
+	    gzip -c > $OUTDIR/${FULL}_${L}_segsites.vcf.gz
 
 	echo "------------------------------------------"
 
