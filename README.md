@@ -20,6 +20,8 @@ Once it is properly placed in the `$WORK/0_data/0_resources/` folder, the genome
 
 Running all scripts in numerical order (i.e. folder `1_genotyping-scripts` before `2_popgen-scripts`, `1.1.loop_fq2ubam.sh` before `1.2.loop_markAdapters.sh`, and `1.9.1.subset_LGs.sh` before `1.9.2.subset_allBP.sh`) will create all figures presented in the manuscript. Specifically, data for each figure of the may be found in the following locations:
 
+Figure | Source
+--- | ---
 Table 1: |`$WORK/5_KH_analyses/out/fst/fst_globals.txt` and `$WORK/5_KH_analyses/out/tables/dxy.csv`
 Figure 1: |`$WORK/6_output/range_map.pdf`
 Figure 2: |`$WORK/6_output/diverge_pcas.pdf`
