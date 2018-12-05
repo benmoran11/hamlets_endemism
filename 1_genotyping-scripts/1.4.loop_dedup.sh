@@ -1,7 +1,10 @@
 #!/bin/bash
 clear
 # starter script to rewrite and submit the 1.4.markDupl_temp.sh script once per sample
+
 cd $WORK/1_output/1.4_dedup
+
+
 
 for i in $( ls ../1.3_mappedBAM/); do
     if [[ $i =~ ^(.*)(.bam)$ ]];

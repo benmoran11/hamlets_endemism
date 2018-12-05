@@ -7,6 +7,6 @@
 #PBS -o 1.0.0.BWAindex.stdout
 #PBS -e 1.0.0.BWAindex.stderr
 
-cd $WORK/1-output/07_final_assembly
+cd $WORK/0_data/0_resources/
 
 bwa index HP_genome_unmasked_01.fa

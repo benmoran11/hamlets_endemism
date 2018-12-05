@@ -2,6 +2,7 @@
 clear
 cd $WORK/1_output/1.1_ubams
 
+
 for i in $( ls ); do
     
     if [[ $i =~ ^(.*)(.bam)$ ]];
