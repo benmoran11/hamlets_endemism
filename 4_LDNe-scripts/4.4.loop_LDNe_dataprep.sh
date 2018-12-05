@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Converting VCF datasets into the GENEPOP format used by NeEstimator. Note the dependency on PGDSpider (path to bin may need to be adjusted).
+# Converting VCF datasets into the GENEPOP format used by NeEstimator. Note the dependency on PGDSpider ($PATH will need to be adjusted).
 
 module load java1.8.0
 
@@ -9,7 +9,7 @@ cd $WORK/4_output/4.2_split_SNPs
 for f in $(ls *.vcf); do
     SAMP=$(basename ./$f .vcf);
 
-    java -Xmx1024m -Xms512M -jar $WORK/bin/PGDSpider_2.1.1.3/PGDSpider2-cli.jar \
+    java -Xmx1024m -Xms512M -jar PGDSpider2-cli.jar \
         -inputfile $WORK/4_output/4.2_split_SNPs/$SAMP.vcf \
 	-inputformat VCF \
 	-outputfile $WORK/4_output/temp/$SAMP.pop \

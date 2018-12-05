@@ -2,8 +2,8 @@
 clear
 
 ### NOTE: This step introduces new read files to the pipeline, which were pre-stored in $WORK/1_output/1.4_dedup/. 
-###       These are BAM files for H. puella, nigricans, and unicolor from Belize, which were created in Hench et al. 2018.
-###       See documentation for this publication for scripts too recreate these files
+###       These are BAM files for H. puella, nigricans, and unicolor from Belize, which were created in Hench et al. 2019.
+###       See documentation for this publication for scripts to recreate these files
 
 cd $WORK/1_output/1.4_dedup
 
