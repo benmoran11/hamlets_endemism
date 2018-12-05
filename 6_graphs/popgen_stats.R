@@ -75,7 +75,7 @@ aggregate(prop.het ~ Species, data = jointvcftools, FUN = function(x) quantile(x
 
 ### Relatedness
 
-source('K_R/R/geom_tile_stupid.R')
+source('$WORK/5_KH_analyses/R/geom_tile_stupid.R')
 vcf_samples <- 'K_R/vcf_samples.txt'
 id_labs <- read_delim(vcf_samples, delim = '\t',col_names = c('ID1','spec')) %>% 
   mutate(order = str_c(spec,ID1))
@@ -83,7 +83,7 @@ id_labs2 <- id_labs %>%
   rename(ID2 = ID1, spec2 = spec)
   
 
-relscores <- read.table('K_R/out/relatedness/gemplusbel_biallelic_filteredSNPs.kinship.txt',
+relscores <- read.table(gzfile('$WORK/5_KH_analyses/out/relatedness/gemplusbel_biallelic_filteredSNPs.kinship.txt.gz'),
                         header = T) %>%
   mutate(ID1 = factor(ID1,levels = id_labs$ID1[order(id_labs$order)]),
          ID2 = factor(ID2,levels = id_labs$ID1[order(id_labs$order)]),
@@ -259,13 +259,13 @@ aggregate(PI ~ Species, data = pi_10kb, FUN = function(x) sd(x)/length(x))
 
 ### Gemplusbel PCA ###
 
-pca_scores <- read.table('gemplusbel_biallelic_filteredSNPs.scores.txt', header = T) %>%
+pca_scores <- read.table(gzfile('$WORK/5_KH_analyses/out/pca/gemplusbel_biallelic_filteredSNPs.scores.txt.gz'), header = T) %>%
   rename(INDV = 'id') %>%
   left_join(samps)
 levels(pca_scores$Species) <- c("H. gemma", "H. maya", "H. nigricans",
                           "H. puella", "H. unicolor")
 
-pca_vars <- read.table('gemplusbel_biallelic_filteredSNPs.exp_var.txt', header = T)
+pca_vars <- read.table(gzfile('$WORK/5_KH_analyses/out/pca/gemplusbel_biallelic_filteredSNPs.exp_var.txt.gz'), header = T)
 
 pca <- ggplot(pca_scores, aes(x = EV01, y = EV02, colour = Species)) +
   theme_bw() +
@@ -278,13 +278,13 @@ pca <- ggplot(pca_scores, aes(x = EV01, y = EV02, colour = Species)) +
 
 ### Belize Only PCA ###
 
-bel_scores <- read.table('belize_only.scores.txt', header = T) %>%
+bel_scores <- read.table(gzfile('$WORK/5_KH_analyses/out/pca/mac1/belize_only.scores.txt.gz'), header = T) %>%
   rename(INDV = 'id') %>%
   left_join(samps)
 levels(bel_scores$Species) <- c("H. gemma", "H. maya", "H. nigricans",
                                 "H. puella", "H. unicolor")
 
-bel_vars <- read.table('belize_only.exp_var.txt', header = T)
+bel_vars <- read.table(gzfile('$WORK/5_KH_analyses/out/pca/mac1/belize_only.exp_var.txt.gz'), header = T)
 
 bel_pca <- ggplot(bel_scores, aes(x = EV01, y = EV02, colour = Species)) +
   theme_bw() +

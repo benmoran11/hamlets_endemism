@@ -1,0 +1,11 @@
+pop1	pop2
+gem	may
+gem	nig
+may	nig
+gem	pue
+may	pue
+nig	pue
+gem	uni
+may	uni
+nig	uni
+pue	uni
