@@ -113,7 +113,7 @@ nmds_plot <- ggplot(ham_wide,aes(x=NMDS1,y=NMDS2,group=Period)) +
         plot.margin = unit(c(5,5,5,5),'pt'),
         axis.title = element_text(face = 'bold'))
 
-ggsave('C:/Users/benmo/Documents/R/BZhams/ms_plots/NMDS_hams.pdf',
+ggsave('../6_output/NMDS_hams.pdf',
        nmds_plot, device = 'pdf', width = 169, height = 100, units = 'mm')
 
 agg_dens <- ham_dens %>%
@@ -141,5 +141,5 @@ trans_dens <- ggplot(summ_dens, aes(x = YEAR, y = density_m2, fill = Species)) +
   scale_fill_manual(name = "Hamlet \nSpecies", values = summ_cols) +
   labs(x='Year', y = expression(paste("Density (Individuals ",~m^{-2},")")))
 
-ggsave('C:/Users/benmo/Documents/R/BZhams/ms_plots/FL_dens.pdf',
+ggsave('../6_output/FL_dens.pdf',
        trans_dens, device = 'pdf', width = 150, height = 90, units = 'mm')
