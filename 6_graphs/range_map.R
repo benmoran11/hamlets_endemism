@@ -155,7 +155,7 @@ added <- ggdraw(p1) +
   draw_grob(compGrob, 0.125, 0.23, 0.1, 0.1)
 ggdraw(added)
   
-ggsave('../5_output/range_map.pdf',
+ggsave('../6_output/range_map.pdf',
        added, device = 'pdf', width = 169, height = 120, units = 'mm')
 
 ### Supplementary plot of all visited sites in BZ & collection sites
@@ -192,7 +192,7 @@ s2 <- ggdraw(s2) +
   draw_grob(compGrob, 0.73, 0.15, 0.1, 0.1) 
 ggdraw(s2)
 
-ggsave('../5_output/Bel_map.pdf',
+ggsave('../6_output/Bel_map.pdf',
               s2, device = 'pdf', width = 89, height = 130, units = 'mm')
 
 
@@ -267,6 +267,6 @@ test <- ggdraw(flmap) +
 ggdraw(test)
 
 
-ggsave('../5_output/FL_map.pdf',
+ggsave('../6_output/FL_map.pdf',
        test, device = 'pdf', width = 169, height = 100, units = 'mm')
   

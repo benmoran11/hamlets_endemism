@@ -28,7 +28,7 @@ LDNe_plot <- ggplot(LDNe, aes(x=Trial_ID, y = Ne)) +
   annotation_logticks(sides = 'l') +
   guides(colour = F, fill = F)
 
-ggsave(filename = "../5_output/maybel_LDNe.pdf", 
+ggsave(filename = "../6_output/maybel_LDNe.pdf", 
        plot=LDNe_plot, device = "pdf", width = 80, height = 75, units = "mm")
 
 median(LDNe$Ne)

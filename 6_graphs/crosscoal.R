@@ -548,5 +548,5 @@ multileg <- ggdraw(multi_comp) +
   draw_grob(legn, x = 0.35, y = 0.1) + 
   draw_grob(legp, x = 0.8, y = 0.1)
 print(multileg)
-ggsave(filename = "../5_output/gemplusbel_crosscoal_joined_cowplot.pdf", 
+ggsave(filename = "../6_output/gemplusbel_crosscoal_joined_cowplot.pdf", 
        plot=multileg, device = "pdf", width = 169, height = 120, units = "mm")

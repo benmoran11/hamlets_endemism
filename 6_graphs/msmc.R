@@ -314,7 +314,7 @@ pretty <- ggplot(filter(gpretty, Peaks == "Masked"), aes(x=YBP, y=Ne, group = Ru
   labs(x="\nGenerations Before Present", y = "Effective Population Size") +
   geom_line(alpha=.75)
 
-ggsave(filename = "../5_output/gemplusbel_msmc2_trimmed.pdf", 
+ggsave(filename = "../6_output/gemplusbel_msmc2_trimmed.pdf", 
        plot=pretty, device = "pdf", width = 169, height = 120, units = "mm")
 
 
@@ -349,7 +349,7 @@ full_plot <- ggplot(filter(gfinal, Peaks == "Masked"), aes(x=YBP, y=Ne, group = 
   labs(x="\nGenerations Before Present", y = "Effective Population Size") +
   geom_line(alpha=.75)
 
-ggsave(filename = "../5_output/gemplusbel_msmc2_full.pdf", 
+ggsave(filename = "../6_output/gemplusbel_msmc2_full.pdf", 
        plot=full_plot, device = "pdf", width = 169, height = 120, units = "mm")
 
 unmasked_plot <- ggplot(filter(gfinal, Peaks == "Unmasked"), aes(x=YBP, y=Ne, group = Run, colour = Species)) +
@@ -383,5 +383,5 @@ unmasked_plot <- ggplot(filter(gfinal, Peaks == "Unmasked"), aes(x=YBP, y=Ne, gr
   labs(x="\nGenerations Before Present", y = "Effective Population Size") +
   geom_line(alpha=.75)
 
-ggsave(filename = "../5_output/gemplusbel_msmc2_unmasked.pdf", 
+ggsave(filename = "../6_output/gemplusbel_msmc2_unmasked.pdf", 
        plot=full_plot, device = "pdf", width = 169, height = 120, units = "mm")

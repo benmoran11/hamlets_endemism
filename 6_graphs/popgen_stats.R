@@ -140,7 +140,7 @@ pMLE_AJK <- ggplot()+
         axis.title = element_blank())
 
 
-ggsave('../5_output/relatedness_mle_ajk.pdf', 
+ggsave('../6_output/relatedness_mle_ajk.pdf', 
        pMLE_AJK, device = 'pdf', width = 169, height = 169, units = 'mm')
 
 
@@ -204,7 +204,7 @@ wleg <- ggdraw(rotated) +
   draw_plot(spec_leg, x = 0.485, y = 0.01, width = 0.40, height = 0.1) +
   draw_plot_label(c("(a)", "(b)", "(c)"), c(.03, .03, 0.62), c(0.85, 0.6, 0.6), hjust = 0)
 
-ggsave('../5_output/inbhetrel_stats.pdf', 
+ggsave('../6_output/inbhetrel_stats.pdf', 
        wleg, device = 'pdf', width = 112, height = 120, units = 'mm')
 
 
@@ -247,7 +247,7 @@ pi_plot <- ggplot(pi_10kb, aes(x = Species, y = PI, fill = Species)) +
   labs(y = expression(italic(pi))) + 
   geom_boxplot() 
 
-ggsave('../5_output/pi_plot.pdf',
+ggsave('../6_output/pi_plot.pdf',
        pi_plot, device = 'pdf', width = 80, height = 80, units = 'mm')
 
 aggregate(PI ~ Species, data = pi_10kb, FUN = median)
@@ -363,5 +363,5 @@ top_plot <- plot_grid(pca, bel_pca, align = 'h', axis = 'b') +
 
 div_plot <- plot_grid(top_plot, legend_grob_single, nrow = 2, rel_heights = c(0.9, 0.2))
 
-ggsave("../5_output/diverge_pcas.pdf",
+ggsave("../6_output/diverge_pcas.pdf",
        plot = div_plot, device = "pdf", width = 169, height = 100, units = "mm")

@@ -65,7 +65,7 @@ smcpp_plot <- ggplot(sfinal, aes(x=YBP, y=Ne, colour = Species)) +
   scale_color_manual(values = maycols) +
   geom_line()
 
-ggsave(filename = "../5_output/gemplusbel_smcpp.pdf", 
+ggsave(filename = "../6_output/gemplusbel_smcpp.pdf", 
               plot=smcpp_plot, device = "pdf", width = 169, height = 120, units = "mm")
 
 
