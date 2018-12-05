@@ -20,24 +20,24 @@ Once it is properly placed in the `$WORK/0_data/0_resources/` folder, the genome
 
 Running all scripts in numerical order (i.e. folder `1_genotyping-scripts` before `2_popgen-scripts`, `1.1.loop_fq2ubam.sh` before `1.2.loop_markAdapters.sh`, and `1.9.1.subset_LGs.sh` before `1.9.2.subset_allBP.sh`) will create all figures presented in the manuscript. Specifically, data for each figure of the may be found in the following locations:
 
-Table 1: `$WORK/5_KH_analyses/out/fst/fst_globals.txt` and `$WORK/5_KH_analyses/out/tables/dxy.csv`
-Figure 1: `$WORK/6_output/range_map.pdf`
-Figure 2: `$WORK/6_output/diverge_pcas.pdf`
-Figure 3: `$WORK/6_output/inbhetrel_stats.pdf`
-Figure 4: `$WORK/6_output/gemplusbel_msmc2_trimmed.pdf`
-Figure 5: `$WORK/6_output/gemplusbel_crosscoal_joined_cowplot.pdf`
-Figure 6: `$WORK/6_output/maybel_LDNe.pdf`
-Suppl. Fig. 1: `$WORK/6_output/Bel_map.pdf`
-Suppl. Fig. 2: `$WORK/6_output/FL_map.pdf`
-Suppl. Fig. 3: `$WORK/6_output/FL_dens.pdf`
-Suppl. Fig. 4: `$WORK/6_output/NMDS_hams.pdf`
-Suppl. Fig. 5: `$WORK/5_KH_analyses/out/plots/fst_maya_only.png`
-Suppl. Fig. 6: `$WORK/6_output/pi_plot.pdf`
-Suppl. Fig. 7: `$WORK/6_output/relatedness_mle_ajk.pdf`
-Suppl. Fig. 8: `$WORK/6_output/gemplusbel_msmc2_full.pdf`
-Suppl. Fig. 9: `$WORK/6_output/gemplusbel_msmc2_unmasked.pdf`
-Suppl. Fig. 10: `$WORK/6_output/gemplusbel_smcpp.pdf`
-Suppl. Tab. 3: `$WORK/5_KH_analyses/tables/outlier_table.tex`
-Suppl. Tab. 4 (Coverage): `$WORK/3_output/3.3_phased_indiv_depths/phased.snps.idepth`
+Table 1: |`$WORK/5_KH_analyses/out/fst/fst_globals.txt` and `$WORK/5_KH_analyses/out/tables/dxy.csv`
+Figure 1: |`$WORK/6_output/range_map.pdf`
+Figure 2: |`$WORK/6_output/diverge_pcas.pdf`
+Figure 3: |`$WORK/6_output/inbhetrel_stats.pdf`
+Figure 4: |`$WORK/6_output/gemplusbel_msmc2_trimmed.pdf`
+Figure 5: |`$WORK/6_output/gemplusbel_crosscoal_joined_cowplot.pdf`
+Figure 6: |`$WORK/6_output/maybel_LDNe.pdf`
+Suppl. Fig. 1: |`$WORK/6_output/Bel_map.pdf`
+Suppl. Fig. 2: |`$WORK/6_output/FL_map.pdf`
+Suppl. Fig. 3: |`$WORK/6_output/FL_dens.pdf`
+Suppl. Fig. 4: |`$WORK/6_output/NMDS_hams.pdf`
+Suppl. Fig. 5: |`$WORK/5_KH_analyses/out/plots/fst_maya_only.png`
+Suppl. Fig. 6: |`$WORK/6_output/pi_plot.pdf`
+Suppl. Fig. 7: |`$WORK/6_output/relatedness_mle_ajk.pdf`
+Suppl. Fig. 8: |`$WORK/6_output/gemplusbel_msmc2_full.pdf`
+Suppl. Fig. 9: |`$WORK/6_output/gemplusbel_msmc2_unmasked.pdf`
+Suppl. Fig. 10: |`$WORK/6_output/gemplusbel_smcpp.pdf`
+Suppl. Tab. 3: |`$WORK/5_KH_analyses/tables/outlier_table.tex`
+Suppl. Tab. 4: |`$WORK/3_output/3.3_phased_indiv_depths/phased.snps.idepth`
 
 Specific numerical values quoted in the manuscript text are drawn from the same datasets which generated these figures and tables. All those tables not included required no intermediate analysis steps, and have sources listed in the manuscript.
