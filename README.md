@@ -24,11 +24,10 @@ Figure | Source
 --- | ---
 Table 1: |`$WORK/5_KH_analyses/out/fst/fst_globals.txt` and `$WORK/5_KH_analyses/out/tables/dxy.csv`
 Figure 1: |`$WORK/6_output/range_map.pdf`
-Figure 2: |`$WORK/6_output/diverge_pcas.pdf`
-Figure 3: |`$WORK/6_output/inbhetrel_stats.pdf`
-Figure 4: |`$WORK/6_output/gemplusbel_msmc2_trimmed.pdf`
-Figure 5: |`$WORK/6_output/gemplusbel_crosscoal_joined_cowplot.pdf`
-Figure 6: |`$WORK/6_output/maybel_LDNe.pdf`
+Figure 2: |`$WORK/6_output/divdif.pdf`
+Figure 3: |`$WORK/6_output/gemplusbel_msmc2_trimmed.pdf`
+Figure 4: |`$WORK/6_output/gemplusbel_crosscoal_joined_cowplot.pdf`
+Figure 5: |`$WORK/6_output/maybel_LDNe.pdf`
 Suppl. Fig. 1: |`$WORK/6_output/Bel_map.pdf`
 Suppl. Fig. 2: |`$WORK/6_output/FL_map.pdf`
 Suppl. Fig. 3: |`$WORK/6_output/FL_dens.pdf`
