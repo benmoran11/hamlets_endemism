@@ -7,6 +7,7 @@
 #PBS -o 2.2.windowed_pi.stdout
 #PBS -e 2.2.windowed_pi.stderr
 
+mkdir $WORK/2_output/2.2_pi
 cd $WORK/2_output/2.2_pi
 
 vcftools --gzvcf $WORK/1_output/1.8_filtered_variants/4_maxMissing5_allBP.recode.vcf.gz \
