@@ -34,10 +34,11 @@ Suppl. Fig. 3: |`$WORK/6_output/FL_dens.pdf`
 Suppl. Fig. 4: |`$WORK/6_output/NMDS_hams.pdf`
 Suppl. Fig. 5: |`$WORK/5_KH_analyses/out/plots/fst_maya_only.png`
 Suppl. Fig. 6: |`$WORK/6_output/pi_plot.pdf`
-Suppl. Fig. 7: |`$WORK/6_output/relatedness_mle_ajk.pdf`
-Suppl. Fig. 8: |`$WORK/6_output/gemplusbel_msmc2_full.pdf`
-Suppl. Fig. 9: |`$WORK/6_output/gemplusbel_msmc2_unmasked.pdf`
-Suppl. Fig. 10: |`$WORK/6_output/gemplusbel_smcpp.pdf`
+Suppl. Fig. 7: |`$WORK/6_output/roh_plot.pdf`
+Suppl. Fig. 8: |`$WORK/6_output/relatedness_mle_ajk.pdf`
+Suppl. Fig. 9: |`$WORK/6_output/gemplusbel_msmc2_full.pdf`
+Suppl. Fig. 10: |`$WORK/6_output/gemplusbel_msmc2_unmasked.pdf`
+Suppl. Fig. 11: |`$WORK/6_output/gemplusbel_smcpp.pdf`
 Suppl. Tab. 3: |`$WORK/5_KH_analyses/tables/outlier_table.tex`
 Suppl. Tab. 4: |`$WORK/3_output/3.3_phased_indiv_depths/phased.snps.idepth`
 
