@@ -32,7 +32,6 @@ jointhet <- ggplot(jointvcftools, aes(x = Species, y = Inb_coef, fill = Species)
         axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         axis.ticks.x = element_blank(),
-        axis.title = element_text(face = 'italic'),
         panel.grid = element_blank(),
         plot.background = element_blank(),
         panel.background = element_blank(),
@@ -40,7 +39,7 @@ jointhet <- ggplot(jointvcftools, aes(x = Species, y = Inb_coef, fill = Species)
         axis.line.y = element_line(colour = 'black'),
         axis.line.x = element_blank()) +
   guides(fill = F) + 
-  labs(y = expression(italic(F))) +
+  labs(y = expression(Inbreeding~Coefficient~italic(F))) +
   geom_hline(yintercept = 0, lwd = 0.2) +
   geom_boxplot(lwd = 0.2, outlier.size = 0.5) +
   scale_fill_manual(name = "Species", values = maycols, drop = F) 
@@ -63,7 +62,7 @@ prophet <- ggplot(jointvcftools, aes(x = Species, y = prop.het, fill = Species))
         axis.line.y = element_line(colour = 'black'),
         axis.line.x = element_blank()) +
   guides(fill = F) + 
-  labs(y = "Het.") +
+  labs(y = "Heterozygosity") +
   geom_boxplot(lwd = 0.2, outlier.size = 0.5) +
   scale_y_continuous(breaks = seq(0.16, 0.18, 0.005)) +
   scale_fill_manual(name = "Species", values = maycols, drop = F)
@@ -255,8 +254,34 @@ aggregate(PI ~ Species, data = pi_10kb, FUN = IQR)
 aggregate(PI ~ Species, data = pi_10kb, FUN = mean)
 aggregate(PI ~ Species, data = pi_10kb, FUN = function(x) sd(x)/length(x))
 
+          
+          
+### Runs of Homozygosity
 
+ROH150 <- read.table('../2_output/biallelic_maf5_150kb.txt', header = T) %>%
+  group_by(FID)  %>%
+  summarise(cums = sum(KB), n = length(KB)) %>%
+  mutate(ID=as.character(FID))%>%
+  left_join(.,read_delim('../0_data/0_resources/vcf_sample.txt',delim='\t',col_names=c('ID','POP'))) %>%
+  mutate(POP = as.factor(POP))
+levels(ROH150$POP) <- c("H. gemma", "H. maya", "H. nigricans", "H. puella", "H. unicolor")
+  
+rohplot <- ggplot(ROH150,aes(x=cums,y=n,col=POP))+
+  theme_bw()+
+  theme(legend.text = element_text(face = 'italic'),
+        panel.grid = element_blank(),
+        legend.position = c(0.95,0.05),
+        legend.justification = c(1,0),
+        legend.title = element_blank()) +
+  geom_point() +
+  scale_color_manual(values = maycols) +
+  labs(x = "Total Length of ROH > 150 kb",y = "Number of ROH > 150 kb")
+rohplot
 
+ggsave('../6_output/roh_plot.pdf',
+       rohplot, device = 'pdf', width = 112, height = 112, units = 'mm')
+
+          
 ### Gemplusbel PCA ###
 
 pca_scores <- read.table(gzfile('$WORK/5_KH_analyses/out/pca/gemplusbel_biallelic_filteredSNPs.scores.txt.gz'), header = T) %>%
@@ -363,5 +388,44 @@ top_plot <- plot_grid(pca, bel_pca, align = 'h', axis = 'b') +
 
 div_plot <- plot_grid(top_plot, legend_grob_single, nrow = 2, rel_heights = c(0.9, 0.2))
 
+# Separate plot of PCAs, not included in final manuscript          
 ggsave("../6_output/diverge_pcas.pdf",
        plot = div_plot, device = "pdf", width = 169, height = 100, units = "mm")
+
+          
+# Combination of all major popgen stats, manuscript Figure 2          
+dummle <- ggplot()+
+  geom_tile_swap(data = relscores, aes(x=y,y=x,fill=kinship_mle))+
+  guides(fill = guide_colorbar(title.hjust = 0.5, order=1)) +
+  scale_color_manual(values = clr, guide = FALSE)+
+  theme_minimal()
+print(dummle)
+diag_leg <- get_legend(dummle)
+
+test_tri <- ggplot()+
+  coord_equal()+
+  geom_tile_swap(data = relscores, aes(x=y,y=x,stupid=kinship_mle))+
+  geom_tile(data = diag_data, aes(x=y,y=x,fill=spec))+
+  guides(stupid = F) +
+  scale_color_manual(values = clr, guide = FALSE)+
+  scale_fill_manual(values = clr, guide = FALSE)+
+  scale_stupid_distiller(name = 'MLE',type = 'seq',palette = 'Oranges',direction = 1)+
+  scale_x_continuous(breaks = 1:length(levels(relscores$ID1)),
+                     labels = levels(relscores$ID1),expand = c(0,0))+
+  scale_y_continuous(breaks = 1:length(levels(relscores$ID1)),
+                     labels = levels(relscores$ID1),expand = c(.022,0))+
+  theme_void()
+
+diag <- ggplotGrob(test_tri)
+test_rot <- editGrob(diag, vp=viewport(x=0.5, y=0.97, angle=-45,width = .7), name="tri")
+wleg <- ggdraw(test_rot) + 
+  draw_plot(prophet, x = 0.025, y = 0.02, width = 0.4, height = 0.45) +
+  draw_plot(jointhet, x = .62, y = 0.02, width = 0.38, height = 0.45) +
+  draw_plot(diag_leg, x = 0.875, y = 0.53, width = 0.1, height = 0.2, scale = 0.2) +
+  draw_plot_label(c("(c)", "(d)", "(e)"), c(.03, .03, 0.62), c(0.85, 0.5, 0.5), hjust = 0)
+
+
+divdif <- plot_grid(div_plot, wleg, ncol = 1, rel_heights = c(0.4, 0.6))
+ggsave("../6_output/divdif.pdf",
+              plot = divdif, device = "pdf", width = 169, height = 220, units = "mm")
+
