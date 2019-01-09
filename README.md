@@ -1,4 +1,4 @@
-# hamlets_endemism_Ne
+# hamlets_endemism
 These scripts and resources are needed to reproduce the results of a study of *Hypoplectrus maya* demography and speciation.
 Software dependencies are listed in Suppl. Table 5 of the study's manuscript, and should be added to the $PATH variable for proper functioning of all scripts. In addition, the location of the GATK and Picard `.jar` files must be represented by specific environmental variables, `$GATK` and `$PICARD`, respectively.
 Due to constraints on file sizes and copyrights, most raw data and larger resources (e.g. genome assemblies, geographic maps) cannot be included in this repo. As such, they'll need to be downloaded from their respective sources:
@@ -43,3 +43,5 @@ Suppl. Tab. 3: |`$WORK/5_KH_analyses/tables/outlier_table.tex`
 Suppl. Tab. 4: |`$WORK/3_output/3.3_phased_indiv_depths/phased.snps.idepth`
 
 Specific numerical values quoted in the manuscript text are drawn from the same datasets which generated these figures and tables. All those tables not included required no intermediate analysis steps, and have sources listed in the manuscript.
+
+**Note** that scripts are not explicitly included for the recreation of LDNe analyses that ended in consistently infinite estimates (*H. nigricans, H. puella, H. unicolor* analyses, and *H. maya* subset analyses). To generate these results, edit `4.1.select_maybel_SNPs.sh` such that the selected individuals (`-sn <ID>`) represent the desired group, and run all subsequent steps in LDNe analysis.
