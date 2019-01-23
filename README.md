@@ -44,4 +44,4 @@ Suppl. Tab. 4: |`$WORK/3_output/3.3_phased_indiv_depths/phased.snps.idepth`
 
 Specific numerical values quoted in the manuscript text are drawn from the same datasets which generated these figures and tables. All those tables not included required no intermediate analysis steps, and have sources listed in the manuscript.
 
-**Note** that scripts are not explicitly included for the recreation of LDNe analyses that ended in consistently infinite estimates (*H. nigricans, H. puella, H. unicolor* analyses, and *H. maya* subset analyses). To generate these results, edit `4.1.select_maybel_SNPs.sh` such that the selected individuals (`-sn <ID>`) represent the desired group, and run all subsequent steps in LDNe analysis.
+**Note** that scripts are not explicitly included for the recreation of LDNe analyses that ended in consistently infinite estimates (*H. nigricans, H. puella*, and *H. unicolor* analyses). To generate these results, edit `4.1.select_maybel_SNPs.sh` such that the selected individuals (`-sn <ID>`) represent the desired group, and run all subsequent steps in LDNe analysis.
