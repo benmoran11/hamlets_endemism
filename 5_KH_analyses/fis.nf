@@ -8,7 +8,7 @@ params.index = 'sample_index.txt'
 
 /* define the genotype file */
 Channel
-    .fromPath( "\$WORK/1_output/1.8_filtered_variants/4_bi-allelic_snps.vcf" )
+    .fromPath( "$WORK/1_output/1.8_filtered_variants/4_bi-allelic_snps.vcf" )
     .set{ vcf_fis }
 
  /* split the comparisons spread sheet by row and feed it into a channel */
