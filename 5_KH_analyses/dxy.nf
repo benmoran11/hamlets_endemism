@@ -8,7 +8,7 @@ params.index = 'comparisons.txt'
 
 /* define the genotype file */
 vcf_allBP = Channel
-    .fromPath( "$WORK/1_output/1.8_filtered_variants/4_maxMissing5_allBP.recode.vcf.gz" )
+    .fromPath( "\$WORK/1_output/1.8_filtered_variants/4_maxMissing5_allBP.recode.vcf.gz" )
     .into{ vcf_dxy }
 
  /* split the comparisons spread sheet by row and feed it into a channel */

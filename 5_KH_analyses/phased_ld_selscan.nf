@@ -4,7 +4,7 @@
    data sheet (lddecay, xpEHH, iHH12).*/
 
 vcf_base = Channel
-	.fromPath( "$WORK/1_output/1.11_phased_variants/5_phased.vcf.gz" )
+	.fromPath( "\$WORK/1_output/1.11_phased_variants/5_phased.vcf.gz" )
 	.into{ vcf_LD_decay; vcf_ihh12; vcf_xpehh }
 
 Channel
