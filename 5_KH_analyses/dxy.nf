@@ -8,7 +8,7 @@ params.index = 'comparisons.txt'
 
 /* define the genotype file */
 vcf_allBP = Channel
-    .fromPath( "$WORK/1_output/1.8_filtered_variants/4_maxMissing5_allBP.recode.vcf.gz" )
+    .fromPath( "\$WORK/1_output/1.8_filtered_variants/4_maxMissing5_allBP.recode.vcf.gz" )
     .into{ vcf_dxy }
 
  /* split the comparisons spread sheet by row and feed it into a channel */
@@ -48,7 +48,7 @@ process split_allBP {
 /* combine the possible comparisons with the genotypes split by LG */
 dxy_prep  =  LG_geno.combine( comparisons_dxy )
 
-/* compute the dxy values along non-overlapping 50kb windows */
+/* compute the dxy values along non-overlaping 50kb windows */
 process dxy_lg {
     label 'L_32g2h5t_dxy_lg'
     /* this process is likely not to finish - somehow the window script

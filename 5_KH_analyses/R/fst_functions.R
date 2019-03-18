@@ -2,7 +2,8 @@
 get_data <- function(file,pop1,pop2,base_dir){
   data_windows <- hypo_import_windows(file = str_c(base_dir,file), gz = TRUE) %>% 
     mutate(run = str_c(pop1,pop2,sep = '-'),
-           window = 'bolditalic(F[ST])') %>% group_by(CHROM)
+           window = 'bolditalic(F[ST])') %>% 
+    group_by(CHROM) 
 }
 
 # helper function to directly get species comparison grobs 
@@ -12,11 +13,23 @@ plot_pair <- function(...){
     ggplotGrob()
 }
 
+plot_single <- function(...){
+  hypo_anno_single(...) %>%
+    ggplotGrob()
+}
 # scaling funtion to rescale global fst values for
 # the horizontal bars on the side
+#rescale_fst <- function(fst){
+#  start <- hypogen::hypo_karyotype$GEND %>% last()*1.01
+#  end <- 6.3e+08
+#  fst_max <- max(globals$weighted)
+#  
+#  scales::rescale(fst,from = c(0,fst_max), to = c(start,end))
+#}
+
 rescale_fst <- function(fst){
-  start <- hypogen::hypo_karyotype$GEND %>% last()*1.01
-  end <- 6.3e+08
+  start <- 0#hypogen::hypo_karyotype$GEND %>% last()*1.01
+  end <- 1
   fst_max <- max(globals$weighted)
   
   scales::rescale(fst,from = c(0,fst_max), to = c(start,end))
@@ -27,6 +40,8 @@ rescale_fst <- function(fst){
 fst_bar_row <- function(fst,run){
   tibble(xmin = rescale_fst(0),
          xmax = rescale_fst(fst),
+         xmin_org = 0,
+         xmax_org = fst,
          ymin = 0,
          ymax= .15,run = run)
 }

@@ -1,6 +1,6 @@
 ## The maya repo
 
-The folder contains 2 **NextFlow** pipelines (`fst_pca_kinship.nf` & `dxy.nf`).
+The repo contains 2 **NextFlow** pipelines (`fst_pca_kinship.nf` & `dxy.nf`).
 Unfortunately, the `dxy.nf` pipeline currently doesn't finish properly (s. comments therein).
 Therefore, after this pipeline fails, the script `sh/collapse_dxy.sh` needs to be run to collect the pieces.
 

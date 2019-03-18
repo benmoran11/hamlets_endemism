@@ -1,11 +1,19 @@
 #!/usr/bin/env Rscript
+library(Hmisc)
+library(IRanges)
+library(GenomicRanges)
 library(tidyverse)
 library(hypogen)
 library(hypoimg)
 library(stringr)
+library(scico)
+
 
 source('R/geom_rect_swap.R')
 source('R/fst_functions.R')
+source('R/roh_and_ihh_functions.R')
+
+# FST section ----------------------
 
 # config -----------------------
 base_dir <- 'out/fst/'
@@ -35,6 +43,14 @@ maycols <- c("H. nigricans" ='#F8766D',
              "H. puella" = '#00BF7D',
              "H. gemma" = '#00B0F6',
              "H. maya" = '#A3A500')
+
+maycols_short <- c(
+  all = '#000000',
+  nig ='#F8766D', 
+  uni = '#E76BF3', 
+  pue = '#00BF7D',
+  gem = '#00B0F6',
+  may = '#A3A500')
 
 clr_hamlets <- tibble(clr = maycols, spec = names(maycols))
 # Our color map
@@ -123,11 +139,13 @@ p1_1 <- ggplot()+
   geom_point(data = data, aes(x = GPOS, y = WEIGHTED_FST, col = run),size=.4) +
   scale_fill_hypo_LG_bg() +
   scale_x_hypo_LG(name = expression(global~italic('F'[ST])))+
-  scale_y_continuous(name = expression(italic('F'[ST])),limits = c(-.1,1))+
+  scale_y_continuous(name = expression(italic('F'[ST])),limits = c(-.1,1),
+                     breaks = (0:4)/4, labels = format((0:4)/4))+
   scale_color_manual(values = clr)+
   theme_hypo()+
   theme(strip.text = element_blank(),
-        legend.position = 'none')
+        legend.position = 'none',
+        axis.title.x = element_text(color='transparent'))
 
 x_fst <- seq(0,0.06,length.out = 5)[1:4]
 p1_2 <- ggplot()+
@@ -141,7 +159,7 @@ p1_2 <- ggplot()+
                      breaks = rescale_fst(x_fst),labels = x_fst,position = "top")+
   scale_y_continuous(sec.axis = sec_axis(~ . , name = "y2"),limits = c(-.1,1))+
   scale_color_manual(values = clr)+
-  theme_bw(base_size = 10, base_family = "Helvetica") %+replace% 
+  theme_bw(base_size = 10, base_family = "Helvetica") +
   theme(plot.background = element_blank(),
         panel.background = element_blank(),
         panel.grid = element_blank(),
@@ -160,8 +178,126 @@ p1_2 <- ggplot()+
         strip.text = element_blank(),
         legend.position = 'none')
 
+#  ROH section -----------------------------
+
+samps <- read.table(file = "sample_id.txt", sep = '\t', header = F) %>%
+  rename(INDV = V1, ID = V2, POP = V3, Pop = V4) %>%
+  select(ID,POP)
+# --- ^ K_input ^ -------
+
+
+roh_data <- read.table('out/ROH/gemplusbel_maf5_150kb_relaxed.hom', header = T) %>%
+  mutate(CHROM = CHR %>% str_pad(width = 2,pad = '0') %>% str_c('LG',.)) %>%
+  select(FID,CHROM,POS1,POS2) %>%
+  mutate(ID=as.character(FID))%>%
+  left_join(samps) %>% 
+  select(-FID) %>%
+  left_join(hypogen::hypo_chrom_start) %>%
+  mutate(GPOS1 =  POS1 + GSTART,
+         GPOS2 =  POS2 + GSTART)
+
+roh_data_ranges <- roh_data %>%
+  group_by(POP) %>%
+  select(POP,GPOS1,GPOS2) %>%
+  arrange(POP,GPOS1) %>%
+  group_by(POP) %>%
+  summarise(data = list(tibble(GPOS1=GPOS1,GPOS2=GPOS2))) %>%
+  purrr::pmap(ranger_run)
+
+
+merged_cov <- roh_data_ranges %>% 
+  purrr::map(merge_prep) %>%
+  purrr::reduce(c) %>%
+  GRanges(seqnames = 'hypo',ranges = .,seqlengths = c('hypo' = hypogen::hypo_karyotype$GEND[24]))  %>%
+  coverage()
+
+combined_cov  <- roh_data_ranges %>%
+  purrr::map(extract_cov) %>%
+  bind_rows() 
+
+p2_1 <- combined_cov %>%
+  gather(key = 'TYPE',value = 'GPOS',start:end) %>%
+  arrange(POP,GPOS,-as.numeric(factor(TYPE))) %>%
+  ggplot(aes(x=GPOS,y=cov,col=POP))+
+  geom_hypo_LG()+
+  geom_path(alpha=.9,size=.2)+
+  hypogen::scale_fill_hypo_LG_bg()+
+  facet_grid(POP~.)+
+  hypogen::scale_x_hypo_LG()+
+  scale_y_continuous("ROH coverage (n haplotypes)",
+                     breaks = (0:4)*2, labels = str_c('      ',(0:4)*2))+
+  scale_color_manual(values = maycols_short)+
+  theme_hypo(legend.position = 'none')+
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+grob_table_roh <- tibble(POP = combined_cov$POP %>% levels()) %>%
+  left_join(.,match_df, by = c("POP" = "short")) %>%
+  left_join(.,tibble(POP = maycols_short %>% names(),
+                     circle_fill = maycols_short)) %>%
+  set_names(.,nm = c('POP','species','circle_fill')) %>%
+  pmap(.,plot_single)
+
+grob_tibble_roh <- tibble( run = combined_cov$POP %>% levels(),
+                       grob = grob_table_roh)
+
+
+p2_2 <- ggplot()+
+  facet_grid( run~., as.table = TRUE)+
+  geom_hypo_grob(data = grob_tibble_roh,
+                 aes(grob = grob, x = .5,y = .5),
+                 angle = 0, height = 1, width = 1)+
+  theme_bw(base_size = 10, base_family = "Helvetica") +
+  theme(plot.background = element_blank(),
+        panel.background = element_blank(),
+        panel.grid = element_blank(),
+        panel.border = element_blank(), 
+        #axis.title.x = element_blank(),
+        axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_blank(),
+        legend.position = 'none')
+
+#  ihh12 section -----------------------------
+
+
+ihhdir <- 'out/ihh12/50kb/'
+
+ihh_files <- dir(path = ihhdir, pattern = '*.txt.gz')
+
+ihh_data <- ihh_files %>% purrr::map(get_ihh) %>% bind_rows()
+
+p3_1 <- ggplot(ihh_data,aes( x = GPOS, y = AVG_iHH12/1000, col = RUN))+
+  geom_hypo_LG()+
+  geom_line()+
+  scale_fill_hypo_LG_bg()+
+  scale_color_manual(values = maycols_short)+
+  scale_x_hypo_LG()+
+  facet_grid(RUN~.)+
+  scale_y_continuous(expression(iHH[12]~(x %.% 10^-3)))+
+  theme_hypo(legend.position = 'none')+
+  theme(strip.background = element_blank(),
+        strip.text = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+# compose plot -----------------------
 p1 <- cowplot::plot_grid(p1_1,p1_2,ncol = 2,align = 'h',rel_widths = c(1,.15))
-ggsave(p1, filename = str_c(base_name,'maya_only.png'),width = 297*.95,height = 85*.95,units = 'mm')
+p2 <- cowplot::plot_grid(p2_1,p2_2,ncol = 2,align = 'h',rel_widths = c(1,.15))
+p3 <- cowplot::plot_grid(p3_1,p2_2,ncol = 2,align = 'h',rel_widths = c(1,.15))
+
+p <- cowplot::plot_grid(p1,p2,p3,ncol = 1,labels = c('(a)','(b)','(c)'),label_size = 10)                                        
+
+ggsave(p, filename = str_c(base_name,'fst_ROH_ihh12.png'),width = 297*.95,height = 85*.95*3,units = 'mm')
 
 #====== create outlier table ==========================
 

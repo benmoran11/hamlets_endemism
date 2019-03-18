@@ -8,8 +8,8 @@ params.index = 'comparisons.txt'
 
 /* define the genotype file */
 vcf_base = Channel
-     .fromPath( "$WORK/1_output/1.8_filtered_variants/4_bi-allelic_snps.vcf" )
-     .into{ vcf_fst; vcf_pca; vcf_pca_bel; vcf_kinship }
+     .fromPath( "\$WORK/1_output/1.8_filtered_variants/4_bi-allelic_snps.vcf" )
+     .into{ vcf_fst; vcf_pca; vcf_pca_bel; vcf_pca_noLD; vcf_pca_bel_noLD; vcf_kinship }
 
  /* split the comparisons spread sheet by row and feed it into a channel */
  Channel
@@ -117,6 +117,54 @@ process vcf_pca {
    Rscript --vanilla \$BASE_DIR/R/vcf2pca.R belize_only.vcf.gz \$BASE_DIR/vcf_samples.txt 8
    """
  }
+
+ /* run the pca for the entire dataset */
+ process vcf_pca_noLD {
+    label "L_120g12h_pca"
+    publishDir "out/pca/", mode: 'symlink'
+    module "R3.4.1"
+
+    input:
+    file( vcf ) from vcf_pca_noLD
+
+    output:
+    set file( "*.exp_var.txt.gz" ), file( "*.scores.txt.gz" ), file( "*.pca.pdf" ), file( "*.snp_loadings.pdf"), file( "*.top_snps.txt.gz" ) into pca_noLD_output
+
+    script:
+    """
+	 vcftools --gzvcf ${vcf} \
+	  --thin 15000 \
+     --recode \
+     --stdout | gzip > all_samples_noLD.vcf.gz
+
+    Rscript --vanilla \$BASE_DIR/R/vcf2pca.R all_samples_noLD.vcf.gz \$BASE_DIR/vcf_samples.txt 8
+    """
+  }
+
+ /* run the pca for the belize samples only */
+  process vcf_pca_bel_noLD {
+    label "L_120g12h_pca_bel"
+    publishDir "out/pca/", mode: 'symlink'
+    module "R3.4.1"
+
+    input:
+    file( vcf ) from vcf_pca_bel_noLD
+
+    output:
+    set file( "*.exp_var.txt.gz" ), file( "*.scores.txt.gz" ), file( "*.pca.pdf" ), file( "*.snp_loadings.pdf"), file( "*.top_snps.txt.gz" ) into pca_bel_noLD_output
+
+    script:
+    """
+    vcftools --gzvcf ${vcf} \
+     --remove \$BASE_DIR/pops/pop.gem.txt \
+	  --thin 15000 \
+     --recode \
+     --stdout | gzip > belize_only_noLD.vcf.gz
+
+    Rscript --vanilla \$BASE_DIR/R/vcf2pca.R belize_only_noLD.vcf.gz \$BASE_DIR/vcf_samples.txt 8
+    """
+  }
+
 
 /* compute the pairewise kinship between all samples */
  process vcf_kinship {
