@@ -16,7 +16,7 @@ for i in $( ls ../1.3_mappedBAM/); do
 	echo "----------------";
 	sed "s/XXnameXX/$FULL/" $WORK/1_genotyping-scripts/0_templates/1.4_markDuplicates_temp.sh > $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
 	echo "java -Xmx30G -jar $PICARD MarkDuplicates \\" >>  $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
-	echo "I=$WORK/1_output/1.3_mappedBM/$i \\" >> $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
+	echo "I=$WORK/1_output/1.3_mappedBAM/$i \\" >> $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
 	echo "O=$WORK/1_output/1.4_dedup/$FULL-dedup.bam \\" >> $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
 	echo "M=$WORK/1_output/1.4_dedup/$FULL-dedup_metrics.txt MAX_FILE_HANDLES=1000 \\" >> $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
 	echo "TMP_DIR=$WORK/temp" >> $WORK/1_genotyping-scripts/1-4_dedup/$FULL-dedup.sh;
